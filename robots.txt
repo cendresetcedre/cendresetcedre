@@ -1,0 +1,37 @@
+# Robots.txt pour Cendres & Cèdre
+# Le bon goût des choses lentes
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://cendresetcedre.fr/sitemap.xml
+
+# Pas de crawl excessif
+Crawl-delay: 1
+
+# Bots utiles : tout autoriser
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Bloquer les bots IA qui aspirent le contenu
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
