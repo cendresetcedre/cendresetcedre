@@ -9,8 +9,25 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+
+  // Consent Mode v2 — refus par défaut, activation après consentement
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+
   gtag('js', new Date());
-  gtag('config', 'G-Y0ZQL8TB4Q');
+  gtag('config', 'G-Y0ZQL8TB4Q', {'anonymize_ip': true});
+
+  // Si l'utilisateur a déjà donné son consentement, on l'applique direct
+  if(localStorage.getItem('cookieConsent') === 'accepted'){
+    gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+    });
+  }
 </script>
 
 <title>Cendres & Cèdre — Cigare & Spiritueux · Le bon goût des choses lentes</title>
@@ -78,7 +95,7 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:18px;line-height:1.75}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:22px;line-height:1.8}
 
 /* noise overlay removed — caused rendering bug on some browsers */
 
@@ -406,6 +423,22 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
 .ft-col a{display:block;font-size:.84rem;color:rgba(250,240,222,.45);text-decoration:none;padding:.22rem 0;cursor:pointer;transition:color .15s}
 .ft-col a:hover{color:var(--amber)}
 .ft-bot{padding-top:1.5rem;border-top:1px solid rgba(196,147,90,.1);display:flex;justify-content:space-between;font-family:var(--font-m);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(196,147,90,.35)}
+
+/* Formulaires Contact + Avis dans le footer */
+.ft-col-form h4{font-family:var(--font-d);font-size:1.25rem;font-weight:600;color:var(--amber);margin-bottom:.5rem}
+.ft-col-intro{font-size:.88rem;color:rgba(250,240,222,.55);line-height:1.65;margin-bottom:1.1rem}
+.ft-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(196,147,90,.2);border-radius:6px;padding:.7rem .95rem;color:var(--cream);font-family:var(--font-b);font-size:.9rem;outline:none;transition:border .2s;margin-bottom:.55rem}
+.ft-input:focus{border-color:var(--amber)}
+.ft-input::placeholder{color:rgba(250,240,222,.35)}
+.ft-textarea{min-height:80px;resize:vertical;font-family:var(--font-b)}
+.ft-btn{width:100%;background:var(--amber);color:var(--nav);border:none;border-radius:6px;padding:.75rem;font-family:var(--font-m);font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all .2s;margin-top:.3rem}
+.ft-btn:hover{background:var(--amber-l);transform:translateY(-1px)}
+.ft-stars{display:flex;gap:.25rem;margin-bottom:.9rem}
+.ft-stars span{font-size:1.6rem;color:rgba(196,147,90,.25);cursor:pointer;transition:color .15s}
+.ft-stars span:hover,.ft-stars span.lit{color:var(--amber)}
+@media(max-width:820px){
+  footer .ft-grid{grid-template-columns:1fr !important;gap:2.5rem}
+}
 
 /* ═══════════════════════════════════════
    CONTENT PAGES
@@ -771,6 +804,14 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
 .blog-card-arr{font-family:var(--font-m);font-size:.62rem;letter-spacing:.12em;color:var(--amber);font-weight:600;margin-top:.8rem;display:inline-block;transition:transform .2s}
 .blog-card:hover .blog-card-arr{transform:translateX(5px)}
 
+/* Blog cards sur la page Guides & Articles — fond clair, texte foncé pour lisibilité */
+#p-guides .blog-card{background:var(--bg2);border:1px solid var(--border);}
+#p-guides .blog-card:hover{background:var(--bg3);border-color:var(--amber);}
+#p-guides .blog-card h3{color:var(--text);}
+#p-guides .blog-card p{color:var(--body);}
+#p-guides .blog-card .blog-tag{color:var(--brown);}
+#p-guides .blog-card .blog-card-arr{color:var(--brown);}
+
 /* ACTU CSS */
 .actu-hero{
   background:linear-gradient(135deg,var(--nav) 0%,#1a0d05 100%);color:var(--cream);position:relative;overflow:hidden;
@@ -797,22 +838,6 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
 .archive-title{font-family:var(--font-d);font-size:1.05rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:.6rem}
 .archive-excerpt{font-size:.88rem;color:var(--body);line-height:1.72}
 
-/* FOOTER ZONE */
-.footer-zone{background:var(--nav);color:var(--cream);padding:5rem 9% 4rem;border-top:1px solid rgba(196,147,90,.2)}
-.footer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;max-width:1100px;margin:0 auto}
-.footer-col h3{font-family:var(--font-d);font-size:1.35rem;font-weight:600;color:var(--amber);margin-bottom:.5rem}
-.footer-col h3 em{color:var(--amber-l,#e8c07a);font-style:italic}
-.footer-col p{font-size:.95rem;color:rgba(250,240,222,.65);line-height:1.75;margin-bottom:1.1rem}
-.footer-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(196,147,90,.25);border-radius:8px;padding:.75rem 1rem;color:var(--cream);font-family:var(--font-b);font-size:.95rem;outline:none;transition:border .2s;margin-bottom:.6rem}
-.footer-input:focus{border-color:var(--amber)}
-.footer-input::placeholder{color:rgba(250,240,222,.4)}
-.footer-textarea{min-height:90px;resize:vertical;font-family:var(--font-b)}
-.footer-btn{width:100%;background:var(--amber);color:var(--nav);border:none;border-radius:8px;padding:.85rem;font-family:var(--font-m);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all .2s}
-.footer-btn:hover{background:var(--amber-l,#e8c07a);transform:translateY(-1px)}
-.stars-input{display:flex;gap:.3rem;margin-bottom:1rem}
-.stars-input span{font-size:1.8rem;color:rgba(196,147,90,.3);cursor:pointer;transition:all .2s}
-.stars-input span.lit{color:var(--amber)}
-@media(max-width:820px){.footer-grid{grid-template-columns:1fr;gap:2.5rem}.footer-zone{padding:3.5rem 5% 3rem}}
 
 </style>
 
@@ -933,9 +958,7 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
         <div class="drop">
           <a onclick="go('rhum')">Rhum</a>
           <a onclick="go('whisky')">Whisky</a>
-          <a onclick="go('vin')">Vin</a>
           <a onclick="go('spiritueux')">Spiritueux</a>
-          <a onclick="go('recettes')">Recettes maison</a>
         </div>
       </li>
 
@@ -977,6 +1000,9 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
       <li class="nav-item">
         <button onclick="go('lexique')">Le Lexique</button>
       </li>
+      <li class="nav-item">
+        <button onclick="go('contact')">Contact</button>
+      </li>
 
     </ul>
 
@@ -999,9 +1025,7 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
     <div class="mob-link head">— Alcool</div>
     <div class="mob-link sub" onclick="go('rhum');closeMob()">Rhum</div>
     <div class="mob-link sub" onclick="go('whisky');closeMob()">Whisky</div>
-    <div class="mob-link sub" onclick="go('vin');closeMob()">Vin</div>
     <div class="mob-link sub" onclick="go('spiritueux');closeMob()">Spiritueux</div>
-    <div class="mob-link sub" onclick="go('recettes');closeMob()">Recettes maison</div>
     <div class="mob-link head">— Accessoires Cigare</div>
     <div class="mob-link sub" onclick="go('briquets');closeMob()">Briquets</div>
     <div class="mob-link sub" onclick="go('cendrier');closeMob()">Cendrier</div>
@@ -1035,6 +1059,7 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
     <div class="mob-link sub" onclick="go('art9');closeMob()">Anatomie d'un cigare</div>
     <div class="mob-link sub" onclick="go('art10');closeMob()">Le cigare au féminin</div>
     <div class="mob-link" onclick="go('lexique');closeMob()" style="color:var(--amber-l)">Le Lexique du Cigare</div>
+    <div class="mob-link" onclick="go('contact');closeMob()" style="color:var(--amber-l)">Contact</div>
   </div>
 </nav>
 
@@ -1135,51 +1160,6 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
       <div class="chap rv d2"><span class="ch-n">08</span><div class="ch-t"><h4>Les erreurs du débutant</h4><p>8 erreurs classiques à éviter absolument</p></div></div>
       <div class="chap rv d1"><span class="ch-n">09</span><div class="ch-t"><h4>Ton premier achat</h4><p>Où acheter, budget, liste pratique complète</p></div></div>
       <div class="chap rv d2"><span class="ch-n">10</span><div class="ch-t"><h4>Glossaire du parfait amateur</h4><p>20 termes pour parler cigare avec aisance</p></div></div>
-    </div>
-  </section>
-
-  <!-- ACCÈS GRATUIT -->
-  <div class="prix-wrap">
-    <div class="prix-card rv">
-      <div class="prix-badge">✦ Accès libre · Sans inscription</div>
-      <div style="font-family:var(--font-d);font-size:clamp(2.5rem,5vw,3.8rem);font-weight:900;color:var(--brown);line-height:1;margin:.5rem 0 .8rem">100% Gratuit</div>
-      <div class="prix-desc">Tout le contenu est en libre accès — aucun paiement, aucune inscription</div>
-      <ul class="prix-list">
-        <li>10 chapitres complets · anatomie, allumage, dégustation</li>
-        <li>10 articles thématiques approfondis</li>
-        <li>135 cigares référencés sur 105 marques</li>
-        <li>66 maisons de rhum et whisky avec accords</li>
-        <li>Lexique de 40+ termes essentiels</li>
-        <li>Mises à jour régulières et nouveaux contenus</li>
-        <li>Pas de pub intrusive, pas de cookies abusifs</li>
-      </ul>
-      <button class="btn-buy" onclick="go('guide')">
-        <span class="btn-buy-txt">Lire le guide complet →</span>
-      </button>
-      <p class="prix-gar">✦ Soutenu par les liens d'affiliation — aucun coût pour le lecteur</p>
-    </div>
-  </div>
-
-  <!-- TESTIMONIALS -->
-  <section class="sec">
-    <div class="s-lbl rv">Ils l'ont lu</div>
-    <h2 class="s-ttl rv">Des amateurs <em>conquis</em></h2>
-    <div class="testis">
-      <div class="testi rv d1">
-        <div class="testi-s">★★★★★</div>
-        <p>"J'avais fumé deux cigares sans comprendre ce que je faisais. Ce guide m'a tout expliqué en une heure. Le chapitre sur l'allumage seul vaut le prix."</p>
-        <div class="testi-a">— Marc T., 34 ans · Bordeaux</div>
-      </div>
-      <div class="testi rv d2">
-        <div class="testi-s">★★★★★</div>
-        <p>"Offert à mon beau-frère pour son anniversaire. Il m'a rappelé le lendemain depuis la cave à cigares en me remerciant."</p>
-        <div class="testi-a">— Sébastien R., 41 ans · Lyon</div>
-      </div>
-      <div class="testi rv d3">
-        <div class="testi-s">★★★★☆</div>
-        <p>"Très bien rédigé, accessible sans être condescendant. Le glossaire m'a vraiment aidé. Je l'ai lu deux fois en une semaine."</p>
-        <div class="testi-a">— Antoine M., 29 ans · Paris</div>
-      </div>
     </div>
   </section>
 
@@ -1322,39 +1302,47 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
 
   <!-- FOOTER -->
   <footer>
-    <div class="ft-grid">
+    <div class="ft-grid" style="grid-template-columns:1fr 1.3fr 1.3fr">
       <div class="ft-brand">
         Cendres & Cèdre
         <p>La référence française pour les amateurs qui veulent comprendre avant de savourer.</p>
+        <p style="margin-top:1.2rem;font-style:normal;font-family:var(--font-m);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)">✉ Contact direct</p>
+        <p style="margin-top:.3rem;font-family:var(--font-d);font-size:1rem;font-style:normal"><a href="mailto:contact@cendresetcedre.fr" style="color:var(--cream);text-decoration:none;border-bottom:1px solid var(--amber);padding-bottom:2px">contact@cendresetcedre.fr</a></p>
       </div>
-      <div class="ft-col">
-        <h4>Cigares</h4>
-        <a onclick="go('cubains')">Cubains</a>
-        <a onclick="go('dominicains')">Dominicains</a>
-        <a onclick="go('honduriens')">Honduriens</a>
-        <a onclick="go('nicaraguayens')">Nicaraguayens</a>
-        <a onclick="go('cigares-mois')">Cigares du mois</a>
+
+      <!-- Contact -->
+      <div class="ft-col-form">
+        <h4>Une question ?</h4>
+        <p class="ft-col-intro">Une suggestion, une recommandation, un partenariat ? Écris-nous directement.</p>
+        <input type="text" class="ft-input" placeholder="Ton nom" id="contact-name">
+        <input type="email" class="ft-input" placeholder="ton@email.fr" id="contact-email">
+        <textarea class="ft-input ft-textarea" placeholder="Ton message..." id="contact-msg"></textarea>
+        <button class="ft-btn" onclick="submitContact()">Envoyer →</button>
       </div>
-      <div class="ft-col">
-        <h4>Alcool</h4>
-        <a onclick="go('rhum')">Rhum</a>
-        <a onclick="go('whisky')">Whisky</a>
-        <a onclick="go('vin')">Vin</a>
-        <a onclick="go('spiritueux')">Spiritueux</a>
-        <a onclick="go('recettes')">Recettes maison</a>
-      </div>
-      <div class="ft-col">
-        <h4>Accessoires</h4>
-        <a onclick="go('briquets')">Briquets</a>
-        <a onclick="go('coupe-cigare')">Coupe cigare</a>
-        <a onclick="go('humidor')">Humidor</a>
-        <a onclick="go('verres-whisky')">Verres Whisky</a>
-        <a onclick="go('guide')" style="color:var(--amber)">✦ Le Guide Complet</a>
+
+      <!-- Avis -->
+      <div class="ft-col-form">
+        <h4>Note le site</h4>
+        <p class="ft-col-intro">Tu aimes Cendres & Cèdre ? Laisse ton retour, il nous aide à améliorer les contenus.</p>
+        <div class="ft-stars" id="stars-rating">
+          <span onclick="setRating(1)">★</span>
+          <span onclick="setRating(2)">★</span>
+          <span onclick="setRating(3)">★</span>
+          <span onclick="setRating(4)">★</span>
+          <span onclick="setRating(5)">★</span>
+        </div>
+        <input type="text" class="ft-input" placeholder="Ton prénom" id="review-name">
+        <textarea class="ft-input ft-textarea" placeholder="Qu'est-ce que tu en penses ?" id="review-msg"></textarea>
+        <button class="ft-btn" onclick="submitReview()">Publier mon avis →</button>
       </div>
     </div>
     <div class="ft-bot">
-      <span>© 2025 Cendres & Cèdre</span>
-      <span>Tous droits réservés</span>
+      <span>© 2026 Cendres & Cèdre · Tous droits réservés</span>
+      <span style="display:flex;gap:1.8rem;flex-wrap:wrap">
+        <a onclick="go('a-propos')" style="color:rgba(196,147,90,.55);cursor:pointer;text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='rgba(196,147,90,.55)'">À propos</a>
+        <a onclick="go('mentions-legales')" style="color:rgba(196,147,90,.55);cursor:pointer;text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='rgba(196,147,90,.55)'">Mentions légales</a>
+        <a onclick="go('confidentialite')" style="color:rgba(196,147,90,.55);cursor:pointer;text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='rgba(196,147,90,.55)'">Confidentialité</a>
+      </span>
     </div>
   </footer>
 
@@ -1372,8 +1360,8 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
   <div class="actu-hero">
     <div class="breadcrumb" onclick="go('home')" style="color:var(--amber)">← Accueil</div>
     <div class="s-lbl">Actualité · Mise à jour mensuelle</div>
-    <h1>L\'<em>Actu du Mois</em></h1>
-    <p>Chaque mois, un fait marquant du monde du cigare — nouveautés, événements, tendances, raretés. Le journal mensuel pour rester connecté à l\'actualité cigarière internationale.</p>
+    <h1><em>L'Actu du Mois</em></h1>
+    <p>Chaque mois, un fait marquant du monde du cigare — nouveautés, événements, tendances, raretés. Le journal mensuel pour rester connecté à l'actualité cigarière internationale.</p>
   </div>
 
   <div class="actu-current">
@@ -1387,46 +1375,23 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
       </div>
       <div class="actu-card-body">
         <h2>Le retour des <em>Edición Limitada</em><br>cubaines 2026</h2>
-        <p>Habanos S.A. vient d\'annoncer la nouvelle vague d\'<strong>Edición Limitada 2026</strong> — les éditions limitées annuelles qui rythment depuis 2000 le calendrier des amateurs de cigares cubains. Cette année, trois marques sont mises à l\'honneur : <strong>Cohiba</strong>, <strong>Hoyo de Monterrey</strong> et <strong>Romeo y Julieta</strong>.</p>
+        <p>Habanos S.A. vient d'annoncer la nouvelle vague d'<strong>Edición Limitada 2026</strong> — les éditions limitées annuelles qui rythment depuis 2000 le calendrier des amateurs de cigares cubains. Cette année, trois marques sont mises à l'honneur : <strong>Cohiba</strong>, <strong>Hoyo de Monterrey</strong> et <strong>Romeo y Julieta</strong>.</p>
 
-        <h3>Ce qu\'il faut retenir</h3>
-        <p>Les Edición Limitada sont des cigares produits en quantité restreinte avec des feuilles vieillies au minimum deux ans. Le format et la cape diffèrent de la production standard de la marque — ce sont des créations spécifiques uniquement disponibles l\'année du lancement, puis épuisées progressivement.</p>
+        <h3>Ce qu'il faut retenir</h3>
+        <p>Les Edición Limitada sont des cigares produits en quantité restreinte avec des feuilles vieillies au minimum deux ans. Le format et la cape diffèrent de la production standard de la marque — ce sont des créations spécifiques uniquement disponibles l'année du lancement, puis épuisées progressivement.</p>
 
-        <h3>Pourquoi c\'est important</h3>
-        <p>Les EL 2026 arrivent dans un contexte de raréfaction du tabac cubain — la récolte 2024 a été affectée par plusieurs ouragans et l\'embargo perdure. Les amateurs anticipent déjà une montée rapide des prix sur le marché secondaire.</p>
+        <h3>Pourquoi c'est important</h3>
+        <p>Les EL 2026 arrivent dans un contexte de raréfaction du tabac cubain — la récolte 2024 a été affectée par plusieurs ouragans et l'embargo perdure. Les amateurs anticipent déjà une montée rapide des prix sur le marché secondaire.</p>
 
         <h3>Notre conseil du mois</h3>
-        <p>Si vous trouvez ces cigares chez votre buraliste habituel, <strong>n\'attendez pas</strong>. Les EL disparaissent généralement des linéaires en 3-6 mois. Et pour ceux qui patientent, sachez qu\'un Edición Limitada se bonifie pendant 5 à 10 ans en humidor.</p>
+        <p>Si vous trouvez ces cigares chez votre buraliste habituel, <strong>n'attendez pas</strong>. Les EL disparaissent généralement des linéaires en 3-6 mois. Et pour ceux qui patientent, sachez qu'un Edición Limitada se bonifie pendant 5 à 10 ans en humidor.</p>
 
-        <p style="font-style:italic;color:var(--muted);margin-top:2rem;padding-top:1.5rem;border-top:1px dashed var(--border)">À suivre dans les prochaines éditions : nos retours dégustation sur chacune des trois sorties, dès qu\'elles arriveront en France.</p>
+        <p style="font-style:italic;color:var(--muted);margin-top:2rem;padding-top:1.5rem;border-top:1px dashed var(--border)">À suivre dans les prochaines éditions : nos retours dégustation sur chacune des trois sorties, dès qu'elles arriveront en France.</p>
       </div>
       <div class="actu-card-footer">
-        ✦ L\'Art du Cigare suit l\'actualité internationale du cigare chaque mois — Habanos S.A., Cigar Aficionado, salons et expositions.
+        ✦ Cendres & Cèdre suit l'actualité internationale du cigare chaque mois — Habanos S.A., Cigar Aficionado, salons et expositions.
       </div>
     </article>
-  </div>
-
-  <div class="actu-archive">
-    <div class="s-lbl">Archives</div>
-    <h2>Les <em style="font-style:italic;color:var(--brown)">éditions précédentes</em></h2>
-    <p style="font-size:.95rem;color:var(--muted);margin-bottom:2rem;font-style:italic">Retrouvez les actualités marquantes du monde du cigare des derniers mois.</p>
-    <div class="archive-grid">
-      <div class="archive-card">
-        <div class="archive-month">Avril 2026</div>
-        <div class="archive-title">Habanos Festival 2026 — bilan de la 26ᵉ édition</div>
-        <div class="archive-excerpt">La grande messe cubaine s\'est tenue à La Havane fin février. Présentation des nouveautés Cohiba et Trinidad, ventes aux enchères records, et soirées légendaires au Tropicana.</div>
-      </div>
-      <div class="archive-card">
-        <div class="archive-month">Mars 2026</div>
-        <div class="archive-title">Davidoff lance sa Year of the Horse 2026</div>
-        <div class="archive-excerpt">L\'éditeur suisse-dominicain dévoile sa série annuelle du calendrier chinois. Édition limitée à 8 888 boîtes, capes dominicaines vieillies 5 ans.</div>
-      </div>
-      <div class="archive-card">
-        <div class="archive-month">Février 2026</div>
-        <div class="archive-title">Padrón 1926 No.40 : Cigare de l\'année selon Cigar Aficionado</div>
-        <div class="archive-excerpt">Le célèbre magazine américain consacre une nouvelle fois la maison nicaraguayenne, qui rafle son 5ᵉ titre en 15 ans avec une note de 97/100.</div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1637,31 +1602,31 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
     <p>Le cœur du cigare, composé de 2 à 4 feuilles assemblées par le torcedor. Elle détermine la force (Volado, Seco, Ligero) et la complexité.</p>
 
     <h2 id="ch3" style="scroll-margin-top:80px">03 · Les 4 grands terroirs</h2>
-    <p>Le terroir d\'origine est l\'élément le plus déterminant du caractère d\'un cigare — encore plus que la marque. Quatre pays dominent aujourd\'hui la production mondiale de cigares premium, chacun avec une identité aromatique distincte.</p>
+    <p>Le terroir d'origine est l'élément le plus déterminant du caractère d'un cigare — encore plus que la marque. Quatre pays dominent aujourd'hui la production mondiale de cigares premium, chacun avec une identité aromatique distincte.</p>
 
     <h3><span class="flag-em">🇨🇺</span> Cuba — la référence absolue</h3>
     <p>Le terroir de <strong>Vuelta Abajo</strong>, dans la province de Pinar del Río, produit ce que beaucoup considèrent comme les meilleures feuilles de tabac au monde. Le sol rouge argileux (la fameuse <em>tierra colorada</em>), riche en minéraux, combiné à un microclimat humide et chaud, donne aux feuilles une complexité aromatique introuvable ailleurs.</p>
-    <p><strong>Profil typique :</strong> terreux, cuir, café, épices douces, notes florales. Complexité progressive qui s\'épanouit sur la durée. Force généralement légère à medium selon la marque.</p>
+    <p><strong>Profil typique :</strong> terreux, cuir, café, épices douces, notes florales. Complexité progressive qui s'épanouit sur la durée. Force généralement légère à medium selon la marque.</p>
     <p><strong>Marques incontournables :</strong> Cohiba, Montecristo, Partagás, Romeo y Julieta, H. Upmann, Hoyo de Monterrey, Bolívar, Trinidad.</p>
-    <p><strong>Particularité :</strong> appellation protégée <em>Habano DOP</em>. Un cigare cubain authentique est cultivé, fabriqué et roulé entièrement à Cuba, dans des manufactures d\'État.</p>
+    <p><strong>Particularité :</strong> appellation protégée <em>Habano DOP</em>. Un cigare cubain authentique est cultivé, fabriqué et roulé entièrement à Cuba, dans des manufactures d'État.</p>
 
     <h3><span class="flag-em">🇩🇴</span> République Dominicaine — la douceur accessible</h3>
-    <p>Après l\'embargo américain sur Cuba en 1962, de nombreuses familles cubaines (Fuente, Padrón, Pérez-Carrillo) ont émigré en République Dominicaine, emportant leur savoir-faire. Aujourd\'hui, la République Dominicaine est le <strong>premier producteur mondial de cigares premium</strong>.</p>
-    <p><strong>Profil typique :</strong> doux, crémeux, notes de noisette, café au lait, bois clair, parfois vanille. Très peu d\'amertume. Idéal pour débuter.</p>
+    <p>Après l'embargo américain sur Cuba en 1962, de nombreuses familles cubaines (Fuente, Padrón, Pérez-Carrillo) ont émigré en République Dominicaine, emportant leur savoir-faire. Aujourd'hui, la République Dominicaine est le <strong>premier producteur mondial de cigares premium</strong>.</p>
+    <p><strong>Profil typique :</strong> doux, crémeux, notes de noisette, café au lait, bois clair, parfois vanille. Très peu d'amertume. Idéal pour débuter.</p>
     <p><strong>Marques phares :</strong> Davidoff, Macanudo, Arturo Fuente, Don Carlos, OpusX, AVO, Ashton, La Flor Dominicana.</p>
-    <p><strong>Particularité :</strong> spécialiste du blend international — les manufactures dominicaines mélangent leurs tabacs avec des capes du Cameroun, du Connecticut ou de l\'Équateur pour créer des profils variés.</p>
+    <p><strong>Particularité :</strong> spécialiste du blend international — les manufactures dominicaines mélangent leurs tabacs avec des capes du Cameroun, du Connecticut ou de l'Équateur pour créer des profils variés.</p>
 
     <h3><span class="flag-em">🇳🇮</span> Nicaragua — la puissance volcanique</h3>
-    <p>Le Nicaragua possède un atout unique : <strong>19 volcans actifs</strong> dont l\'activité géologique enrichit constamment les sols en minéraux. Trois vallées produisent trois profils distincts : Estelí (puissant), Jalapa (doux et aromatique), Condega (équilibré).</p>
+    <p>Le Nicaragua possède un atout unique : <strong>19 volcans actifs</strong> dont l'activité géologique enrichit constamment les sols en minéraux. Trois vallées produisent trois profils distincts : Estelí (puissant), Jalapa (doux et aromatique), Condega (équilibré).</p>
     <p><strong>Profil typique :</strong> café noir, chocolat 70%, cuir, poivre, minéralité volcanique. Force medium à très fort. Rapport qualité/prix souvent supérieur à Cuba.</p>
     <p><strong>Marques phares :</strong> Padrón, Drew Estate, My Father, Oliva, Joya de Nicaragua, Plasencia, Tatuaje.</p>
     <p><strong>Particularité :</strong> les cigares nicaraguayens raflent les plus hautes distinctions depuis 20 ans. Padrón 1964 Anniversary et 1926 No.9 sont régulièrement classés parmi les meilleurs cigares du monde.</p>
 
     <h3><span class="flag-em">🇭🇳</span> Honduras — le secret bien gardé</h3>
-    <p>Le terroir de <strong>Jamastran</strong>, situé entre 900 et 1100 mètres d\'altitude dans le département d\'El Paraíso, offre un sol rouge argileux similaire à Vuelta Abajo. Pourtant le Honduras reste moins médiatisé — ce qui en fait paradoxalement <strong>l\'une des meilleures affaires</strong> du monde du cigare premium.</p>
+    <p>Le terroir de <strong>Jamastran</strong>, situé entre 900 et 1100 mètres d'altitude dans le département d'El Paraíso, offre un sol rouge argileux similaire à Vuelta Abajo. Pourtant le Honduras reste moins médiatisé — ce qui en fait paradoxalement <strong>l'une des meilleures affaires</strong> du monde du cigare premium.</p>
     <p><strong>Profil typique :</strong> rustique, terreux, boisé, parfois poivré. Caractère affirmé sans excès. Excellent rapport qualité-prix.</p>
     <p><strong>Marques phares :</strong> Camacho, Alec Bradley, Punch, Flor de Selva, Plasencia.</p>
-    <p><strong>Particularité :</strong> le Honduras est l\'un des seuls pays au monde à cultiver encore du véritable Corojo, la variété de tabac historique abandonnée à Cuba dans les années 1990.</p>
+    <p><strong>Particularité :</strong> le Honduras est l'un des seuls pays au monde à cultiver encore du véritable Corojo, la variété de tabac historique abandonnée à Cuba dans les années 1990.</p>
 
     <h3>Autres pays producteurs</h3>
     <p>Au-delà des quatre grands, plusieurs terroirs émergent : <strong>Mexique</strong> (San Andrés Tuxtla, capes Maduro), <strong>Brésil</strong> (Bahia, profils sucrés et fruités), <strong>Équateur</strong> (capes Sumatra réputées), <strong>Pérou</strong> (capes Habano), <strong>Costa Rica</strong>, <strong>Panama</strong>. Ces origines sont souvent utilisées en assemblage avec des tabacs des grandes nations.</p>
@@ -2302,7 +2267,7 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
 
   <style>
     .lex-nav{display:flex;flex-wrap:wrap;gap:.5rem;padding:2rem 9% 1rem;background:var(--bg2);border-bottom:1px solid var(--border)}
-    .lex-letter{font-family:var(--font-m);font-size:.65rem;letter-spacing:.1em;padding:.38rem .7rem;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .18s;text-transform:uppercase}
+    .lex-letter{font-family:var(--font-m);font-size:.82rem;letter-spacing:.1em;padding:.5rem .95rem;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .18s;text-transform:uppercase}
     .lex-letter:hover,.lex-letter.active{background:var(--brown);color:var(--cream);border-color:var(--brown)}
     .lex-section{padding:3rem 9%;border-bottom:1px solid var(--border)}
     .lex-section:last-child{border-bottom:none}
@@ -2310,10 +2275,10 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
     .lex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
     .lex-item{background:var(--bg2);padding:1.4rem 1.6rem;border-left:3px solid transparent;transition:border-color .2s,background .2s}
     .lex-item:hover{border-left-color:var(--amber);background:var(--bg3)}
-    .lex-term{font-family:var(--font-d);font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.15rem}
-    .lex-cat{font-family:var(--font-m);font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:.5rem;display:block}
-    .lex-def{font-size:.88rem;color:var(--body);line-height:1.72}
-    .lex-exp{font-size:.8rem;color:var(--muted);font-style:italic;margin-top:.35rem}
+    .lex-term{font-family:var(--font-d);font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:.2rem}
+    .lex-cat{font-family:var(--font-m);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:.6rem;display:block}
+    .lex-def{font-size:1.02rem;color:var(--body);line-height:1.75}
+    .lex-exp{font-size:.95rem;color:var(--muted);font-style:italic;margin-top:.45rem}
     .lex-theme{padding:2.5rem 9% 0;background:var(--bg)}
     .lex-theme-title{font-family:var(--font-d);font-size:1.4rem;font-weight:600;margin-bottom:1.5rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);color:var(--brown)}
     @media(max-width:700px){.lex-grid{grid-template-columns:1fr}.lex-nav{padding:1.2rem 5%}.lex-section,.lex-theme{padding-left:5%;padding-right:5%}}
@@ -3508,7 +3473,7 @@ footer{background:var(--nav);padding:4rem 9% 2rem;border-top:2px solid var(--amb
      SCRIPTS
 ══════════════════════════════════════════ -->
 <script>
-const CONTENT_PAGES = ['cubains','dominicains','nicaraguayens','honduriens','rhum','whisky','recettes','lexique','cigares-mois','vin','spiritueux','briquets','cendrier','coupe-cigare','consommable','etui-cigare','humidor','repose-cigare','verres-rhum','verres-whisky','verres-vin','flasques','epices-rhum','bec-verseur','tire-bouchon','porte-bouteilles','art1','art2','art3','art4','art5','art6','art7','art8','art9','art10','guides','actu'];
+const CONTENT_PAGES = ['cubains','dominicains','nicaraguayens','honduriens','rhum','whisky','recettes','lexique','cigares-mois','vin','spiritueux','briquets','cendrier','coupe-cigare','consommable','etui-cigare','humidor','repose-cigare','verres-rhum','verres-whisky','verres-vin','flasques','epices-rhum','bec-verseur','tire-bouchon','porte-bouteilles','art1','art2','art3','art4','art5','art6','art7','art8','art9','art10','guides','actu','a-propos','mentions-legales','confidentialite','contact'];
 const DB = {
   'cubains':         {lbl:'Cigares',         title:'Les Cubains',          desc:'La référence mondiale — Cohiba, Montecristo, Romeo y Julieta. Le terroir de Vuelta Abajo, ses notes terreuses, épicées, d\'une complexité unique.'},
   'dominicains':     {lbl:'Cigares',         title:'Les Dominicains',       desc:'Douceur et accessibilité — Macanudo, Davidoff, Arturo Fuente. Notes crémeuses et de noisette. L\'idéal pour commencer en beauté.'},
@@ -5136,57 +5101,235 @@ function jumpLex(letter){
 
 
 <!-- ══════════════════════════════════════════
-     FOOTER ZONE — Contact / Avis / Newsletter
+     PAGE — À PROPOS
 ══════════════════════════════════════════ -->
-<section class="footer-zone">
-  <div class="footer-grid">
-
-    <!-- Contact -->
-    <div class="footer-col">
-      <div class="s-lbl" style="color:var(--amber);margin-bottom:.5rem">Contact</div>
-      <h3>Une <em>question ?</em></h3>
-      <p>Une suggestion, une recommandation, un partenariat ? Écris-nous directement.</p>
-      <input type="text" class="footer-input" placeholder="Ton nom" id="contact-name">
-      <input type="email" class="footer-input" placeholder="ton@email.fr" id="contact-email">
-      <textarea class="footer-input footer-textarea" placeholder="Ton message..." id="contact-msg"></textarea>
-      <button class="footer-btn" onclick="submitContact()">Envoyer →</button>
-    </div>
-
-    <!-- Avis / Témoignage -->
-    <div class="footer-col">
-      <div class="s-lbl" style="color:var(--amber);margin-bottom:.5rem">Votre avis</div>
-      <h3>Note <em>le site</em></h3>
-      <p>Tu aimes l'Art du Cigare ? Laisse ton retour, il nous aide à améliorer les contenus.</p>
-      <div class="stars-input" id="stars-rating">
-        <span onclick="setRating(1)">★</span>
-        <span onclick="setRating(2)">★</span>
-        <span onclick="setRating(3)">★</span>
-        <span onclick="setRating(4)">★</span>
-        <span onclick="setRating(5)">★</span>
-      </div>
-      <input type="text" class="footer-input" placeholder="Ton prénom" id="review-name">
-      <textarea class="footer-input footer-textarea" placeholder="Qu'est-ce que tu en penses ?" id="review-msg"></textarea>
-      <button class="footer-btn" onclick="submitReview()">Publier mon avis →</button>
-    </div>
-
-    <!-- Newsletter -->
-    <div class="footer-col">
-      <div class="s-lbl" style="color:var(--amber);margin-bottom:.5rem">Newsletter mensuelle</div>
-      <h3>L'Actu <em>chaque mois</em></h3>
-      <p>Reçois l'édition mensuelle de l'Actu du Mois, les nouveaux articles et les meilleures sélections — directement dans ta boîte.</p>
-      <input type="email" class="footer-input" placeholder="ton@email.fr" id="newsletter-email">
-      <button class="footer-btn" onclick="submitNewsletter()">S'inscrire à la newsletter →</button>
-      <p style="font-size:.78rem;color:rgba(250,240,222,.4);margin-top:.8rem;font-style:italic">Un email par mois maximum. Pas de spam, pas de revente d'adresse.</p>
-    </div>
-
+<div id="p-a-propos" class="page">
+  <div class="cp-hero">
+    <div class="breadcrumb" onclick="go('home')">← Accueil</div>
+    <div class="cp-tag">À propos · L'histoire du site</div>
+    <h1 class="cp-h1">À propos de<br><em>Cendres & Cèdre</em></h1>
+    <p class="cp-intro">Un site né d'une passion simple : accompagner un bon cigare avec le bon alcool. Sans jargon, sans snobisme, sans prétention.</p>
   </div>
-  <div style="text-align:center;padding-top:3rem;margin-top:3rem;border-top:1px solid rgba(196,147,90,.15);font-family:var(--font-m);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,240,222,.3)">
-    Cendres & Cèdre · 2026 · Tous droits réservés
-  </div>
-</section>
 
+  <div class="cp-body" style="display:block">
+    <h2>Pourquoi Cendres & Cèdre ?</h2>
+    <p>Tout est parti d'une frustration. J'aime fumer un cigare en prenant le temps. J'aime aussi boire un bon rhum, un bon whisky. Et quand j'ai voulu apprendre à <strong>associer les deux</strong> — quel cigare avec quel alcool, dans quelles proportions, à quel moment — je me suis rendu compte qu'il n'existait quasiment <strong>aucun guide francophone</strong> accessible. Que des forums éparpillés, des avis contradictoires, ou des articles écrits dans un jargon réservé aux initiés.</p>
+    <p>Cendres & Cèdre est né de cette envie : créer le site que j'aurais voulu trouver quand j'ai commencé.</p>
+
+    <h2>Qui je suis</h2>
+    <p>Je m'appelle <strong>Yohann</strong>. Je suis un amateur passionné, pas un sommelier diplômé, pas un caviste, pas un journaliste spécialisé. Je fume mon premier cigare en <strong>2018</strong>, et depuis je n'ai jamais arrêté d'apprendre — par la lecture, par la dégustation, par les échanges avec d'autres amateurs.</p>
+    <p>Ce site reflète cet apprentissage. Je n'ai pas la prétention d'avoir tout goûté ni tout compris. Mais j'ai accumulé assez d'expérience pour partager des recommandations honnêtes — celles que je donnerais à un ami qui veut s'y mettre.</p>
+
+    <div class="cp-pullquote"><p>"Le bon goût des choses lentes — c'est l'idée que prendre son temps, c'est déjà la moitié du plaisir."</p></div>
+
+    <h2>Ma philosophie</h2>
+    <p>Trois principes guident chaque ligne du site :</p>
+    <ul>
+      <li><strong>Sans jargon</strong> — Les termes techniques sont expliqués au fur et à mesure. Pas besoin d'un dictionnaire de cigarologie pour lire un article ici.</li>
+      <li><strong>Sans snobisme</strong> — Le meilleur cigare n'est pas forcément le plus cher. Le bon whisky n'est pas forcément un single malt de 25 ans. Je recommande des produits accessibles autant que des références prestigieuses.</li>
+      <li><strong>Honnêteté éditoriale</strong> — Je ne recommande que des produits que j'ai goûtés ou que j'ai des bonnes raisons de croire excellents (sources sérieuses, avis croisés d'amateurs reconnus). Quand je n'ai pas testé, je le précise.</li>
+    </ul>
+
+    <h2>Pour qui ?</h2>
+    <p>Pour <strong>les débutants</strong> qui veulent comprendre avant de se lancer sans se ruiner sur un cigare trop fort. Pour <strong>les curieux</strong> qui aiment déjà un peu et veulent approfondir. Pour <strong>les amateurs confirmés</strong> qui cherchent un point de vue francophone décomplexé sur l'univers du cigare et des spiritueux.</p>
+    <p>Pas pour les puristes qui pensent qu'un cubain ne peut s'accorder qu'avec un porto millésimé de 1937. Pour eux, il existe déjà d'autres sites.</p>
+
+    <h2>Comment fonctionne le site ?</h2>
+    <p>Tout le contenu est <strong>gratuit</strong> et le restera. Pas d'abonnement, pas de paywall, pas de version premium. Le site se finance via des <strong>liens d'affiliation</strong> — quand tu cliques sur un lien vers un site partenaire (caviste, boutique en ligne) et que tu achètes quelque chose, je touche une petite commission. Cela <strong>ne change rien au prix</strong> pour toi, et cela me permet de continuer à enrichir le site sans le rendre payant.</p>
+    <p>Cette transparence est importante : les recommandations ne sont jamais influencées par les commissions. Quand un produit est mauvais, je ne le recommande pas — même s'il pourrait me rapporter.</p>
+
+    <h2>Où me trouver</h2>
+    <p>Pour me contacter, une question, une suggestion, un partenariat : <a href="mailto:contact@cendresetcedre.fr" style="color:var(--brown);text-decoration:underline">contact@cendresetcedre.fr</a></p>
+    <p style="margin-top:2rem;font-style:italic;color:var(--muted);font-size:.95rem">Merci d'être là. Bonne dégustation.</p>
+
+    <div class="art-cta">
+      <h3>Commencer par le guide</h3>
+      <p>10 chapitres pour comprendre l'univers du cigare de A à Z. Gratuit, en français, sans prise de tête.</p>
+      <button class="btn btn-gold" onclick="go('guide')"><span>Lire le guide →</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE — MENTIONS LÉGALES
+══════════════════════════════════════════ -->
+<div id="p-mentions-legales" class="page">
+  <div class="cp-hero">
+    <div class="breadcrumb" onclick="go('home')">← Accueil</div>
+    <div class="cp-tag">Informations légales</div>
+    <h1 class="cp-h1">Mentions <em>légales</em></h1>
+    <p class="cp-intro">Conformément à la loi pour la Confiance dans l'Économie Numérique du 21 juin 2004 (LCEN), voici les informations légales du site Cendres & Cèdre.</p>
+  </div>
+
+  <div class="cp-body" style="display:block">
+    <h2>Éditeur du site</h2>
+    <p>Le site <strong>cendresetcedre.fr</strong> est édité à titre personnel par un particulier non commerçant :</p>
+    <ul>
+      <li><strong>Yohann Malgowski</strong></li>
+      <li>Domicilié à Wattignies (59139), France</li>
+      <li>Email : <a href="mailto:contact@cendresetcedre.fr" style="color:var(--brown);text-decoration:underline">contact@cendresetcedre.fr</a></li>
+    </ul>
+    <p>Conformément à l'article 6 III 2 de la LCEN, en tant qu'éditeur non professionnel, l'adresse postale complète et le numéro de téléphone sont conservés par l'hébergeur et communiqués sur demande légitime aux autorités compétentes.</p>
+
+    <h2>Directeur de la publication</h2>
+    <p>Yohann Malgowski</p>
+
+    <h2>Hébergeur</h2>
+    <p>Le site est hébergé par :</p>
+    <ul>
+      <li><strong>GitHub, Inc.</strong></li>
+      <li>88 Colin P Kelly Jr Street, San Francisco, CA 94107, États-Unis</li>
+      <li>Téléphone : +1 (877) 448-4820</li>
+      <li>Site web : <a href="https://github.com" target="_blank" rel="noopener" style="color:var(--brown);text-decoration:underline">github.com</a></li>
+    </ul>
+
+    <h2>Nom de domaine</h2>
+    <p>Le nom de domaine <strong>cendresetcedre.fr</strong> est enregistré chez :</p>
+    <ul>
+      <li><strong>OVH SAS</strong></li>
+      <li>2 rue Kellermann, 59100 Roubaix, France</li>
+      <li>RCS Lille Métropole 424 761 419 00045</li>
+      <li>Site web : <a href="https://www.ovh.com" target="_blank" rel="noopener" style="color:var(--brown);text-decoration:underline">ovh.com</a></li>
+    </ul>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>L'ensemble des contenus présents sur ce site (textes, images, mise en page, charte graphique, code source) sont la propriété exclusive de Yohann Malgowski, sauf mention contraire. Toute reproduction, représentation, modification, publication, transmission, dénaturation, totale ou partielle du site ou de son contenu, par quelque procédé que ce soit, sans l'autorisation expresse et préalable de l'éditeur, est interdite et constituerait une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.</p>
+    <p>Les marques citées sur ce site (noms de cigares, distilleries, maisons de spiritueux) restent la propriété exclusive de leurs titulaires respectifs.</p>
+
+    <h2>Liens hypertextes</h2>
+    <p>Le site Cendres & Cèdre contient des liens hypertextes vers d'autres sites internet. Ces liens sont fournis à titre informatif. L'éditeur n'exerce aucun contrôle sur ces sites externes et ne peut en aucun cas être tenu responsable de leur contenu.</p>
+
+    <h2>Liens d'affiliation</h2>
+    <p>Conformément aux obligations de transparence, certains liens présents sur ce site sont des <strong>liens d'affiliation</strong>. Cela signifie que si vous effectuez un achat via ces liens, l'éditeur du site peut percevoir une commission de la part du site marchand. <strong>Cela n'entraîne aucun coût supplémentaire pour vous</strong> et n'influence en aucun cas les recommandations éditoriales du site, qui sont indépendantes.</p>
+
+    <h2>Avertissement légal — Tabac et alcool</h2>
+    <p>Le tabac et l'alcool sont des produits réservés aux personnes majeures. Conformément à la législation française :</p>
+    <ul>
+      <li>La vente de tabac aux mineurs est interdite (article L.3512-12 du Code de la santé publique).</li>
+      <li>La vente d'alcool aux mineurs est interdite (article L.3342-1 du Code de la santé publique).</li>
+      <li>L'abus d'alcool est dangereux pour la santé. À consommer avec modération.</li>
+      <li>Fumer nuit gravement à votre santé et à celle de votre entourage.</li>
+    </ul>
+    <p>Le site Cendres & Cèdre s'adresse exclusivement à un public majeur (18 ans et plus) et ne fait en aucun cas la promotion de la consommation de tabac ou d'alcool. Il s'agit d'un site éditorial de découverte culturelle et gastronomique.</p>
+
+    <h2>Droit applicable</h2>
+    <p>Le présent site est soumis au droit français. En cas de litige, et après tentative de recherche d'une solution amiable, les tribunaux français seront seuls compétents pour connaître de ce litige.</p>
+
+    <p style="margin-top:3rem;font-size:.9rem;color:var(--muted);font-style:italic">Dernière mise à jour : Mai 2026</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE — POLITIQUE DE CONFIDENTIALITÉ
+══════════════════════════════════════════ -->
+<div id="p-confidentialite" class="page">
+  <div class="cp-hero">
+    <div class="breadcrumb" onclick="go('home')">← Accueil</div>
+    <div class="cp-tag">RGPD · Confidentialité</div>
+    <h1 class="cp-h1">Politique de<br><em>Confidentialité</em></h1>
+    <p class="cp-intro">Cette page décrit la manière dont vos données personnelles sont collectées et utilisées sur Cendres & Cèdre, conformément au RGPD (Règlement Général sur la Protection des Données).</p>
+  </div>
+
+  <div class="cp-body" style="display:block">
+    <h2>Responsable du traitement</h2>
+    <p>Le responsable du traitement des données est <strong>Yohann Malgowski</strong>, éditeur du site cendresetcedre.fr, joignable par email à : <a href="mailto:contact@cendresetcedre.fr" style="color:var(--brown);text-decoration:underline">contact@cendresetcedre.fr</a></p>
+
+    <h2>Données collectées</h2>
+    <p>Le site Cendres & Cèdre collecte deux types de données :</p>
+
+    <h3>1. Données collectées via formulaires</h3>
+    <p>Lorsque vous utilisez le formulaire de contact, votre <strong>nom, email et message</strong> sont collectés uniquement pour répondre à votre demande. Ces données ne sont jamais transmises à des tiers et sont conservées pendant 12 mois maximum.</p>
+
+    <h3>2. Données collectées automatiquement (statistiques)</h3>
+    <p>Le site utilise des outils de mesure d'audience pour comprendre la fréquentation et améliorer le contenu :</p>
+    <ul>
+      <li><strong>Google Analytics 4</strong> — collecte de données anonymisées sur les visites (pages vues, durée, source de trafic, type d'appareil)</li>
+      <li><strong>Microsoft Clarity</strong> — analyse comportementale anonymisée (mouvements de souris, défilements)</li>
+    </ul>
+    <p>Ces données sont <strong>anonymisées</strong> et ne permettent pas de vous identifier personnellement. Elles sont conservées pour une durée maximale de 14 mois.</p>
+
+    <h2>Cookies</h2>
+    <p>Le site utilise des cookies pour deux raisons :</p>
+    <ul>
+      <li><strong>Cookies techniques</strong> — nécessaires au fonctionnement du site (mémorisation de votre choix concernant les cookies). Pas de consentement requis.</li>
+      <li><strong>Cookies de mesure d'audience</strong> — déposés par Google Analytics et Microsoft Clarity uniquement après votre consentement.</li>
+    </ul>
+    <p>Vous pouvez à tout moment refuser ou accepter ces cookies via la bannière qui s'affiche lors de votre première visite. Vous pouvez également configurer votre navigateur pour bloquer les cookies (voir l'aide de votre navigateur).</p>
+
+    <h2>Vos droits</h2>
+    <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+    <ul>
+      <li><strong>Droit d'accès</strong> à vos données</li>
+      <li><strong>Droit de rectification</strong> de vos données</li>
+      <li><strong>Droit à l'effacement</strong> (« droit à l'oubli »)</li>
+      <li><strong>Droit à la limitation</strong> du traitement</li>
+      <li><strong>Droit à la portabilité</strong> de vos données</li>
+      <li><strong>Droit d'opposition</strong> au traitement</li>
+    </ul>
+    <p>Pour exercer ces droits, contactez : <a href="mailto:contact@cendresetcedre.fr" style="color:var(--brown);text-decoration:underline">contact@cendresetcedre.fr</a></p>
+    <p>Vous avez également le droit de déposer une réclamation auprès de la <strong>CNIL</strong> (Commission Nationale de l'Informatique et des Libertés) : <a href="https://www.cnil.fr" target="_blank" rel="noopener" style="color:var(--brown);text-decoration:underline">www.cnil.fr</a></p>
+
+    <h2>Sécurité</h2>
+    <p>Toutes les communications avec le site sont chiffrées en HTTPS. Aucune donnée bancaire n'est collectée par le site (les liens d'affiliation redirigent vers des sites marchands externes qui appliquent leurs propres règles de sécurité).</p>
+
+    <h2>Modifications</h2>
+    <p>Cette politique de confidentialité peut être modifiée à tout moment. La date de dernière mise à jour figure en bas de cette page.</p>
+
+    <p style="margin-top:3rem;font-size:.9rem;color:var(--muted);font-style:italic">Dernière mise à jour : Mai 2026</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE — CONTACT
+══════════════════════════════════════════ -->
+<div id="p-contact" class="page">
+  <div class="cp-hero">
+    <div class="breadcrumb" onclick="go('home')">← Accueil</div>
+    <div class="cp-tag">Nous contacter</div>
+    <h1 class="cp-h1">Une question,<br><em>un message ?</em></h1>
+    <p class="cp-intro">Suggestion, recommandation, partenariat, signalement d'erreur — toute message est lu et reçoit une réponse sous 48h.</p>
+  </div>
+
+  <div class="cp-body" style="display:block;max-width:880px">
+    <h2>Par email</h2>
+    <p>Le moyen le plus rapide pour me joindre :</p>
+    <p style="font-size:1.4rem;font-family:var(--font-d);margin:1.5rem 0">
+      <a href="mailto:contact@cendresetcedre.fr" style="color:var(--brown);text-decoration:underline;font-weight:600">contact@cendresetcedre.fr</a>
+    </p>
+    <p>Je réponds personnellement à chaque message dans un délai de <strong>48 heures maximum</strong>.</p>
+
+    <h2>Ce qui m'intéresse</h2>
+    <ul>
+      <li><strong>Suggestions de cigares ou de spiritueux</strong> à tester et à intégrer au site</li>
+      <li><strong>Signalements d'erreurs</strong> ou d'informations à corriger</li>
+      <li><strong>Propositions de partenariat</strong> (cavistes, distilleries, manufactures)</li>
+      <li><strong>Demandes presse</strong> ou interviews</li>
+      <li><strong>Retours d'expérience</strong> de lecteurs amateurs ou professionnels</li>
+    </ul>
+
+    <h2>Formulaire de contact</h2>
+    <p>Tu peux aussi m'écrire directement via le formulaire en bas de cette page (dans le footer marron). Il fonctionne pour tout type de message.</p>
+
+    <h2>Qui suis-je ?</h2>
+    <p>Pour en savoir plus sur l'éditeur du site et la philosophie de Cendres & Cèdre, consulte la page <a onclick="go('a-propos')" style="color:var(--brown);text-decoration:underline;cursor:pointer">À propos</a>.</p>
+
+    <h2>Informations légales</h2>
+    <p>Pour les informations légales complètes (éditeur, hébergeur, propriété intellectuelle), consulte la page <a onclick="go('mentions-legales')" style="color:var(--brown);text-decoration:underline;cursor:pointer">Mentions légales</a>.</p>
+
+    <div class="art-cta">
+      <h3>Tu veux soutenir le site ?</h3>
+      <p>Le meilleur moyen est de partager les articles qui t'ont plu autour de toi, ou d'utiliser nos liens d'affiliation quand tu fais des achats — c'est ce qui permet au site de rester 100% gratuit.</p>
+      <button class="btn btn-gold" onclick="go('a-propos')"><span>En savoir plus →</span></button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Formulaires footer : contact + avis -->
 <script>
-// Footer interactions (placeholder — connect to Formspree/Tally later)
 let userRating = 0;
 function setRating(n){
   userRating = n;
@@ -5199,7 +5342,7 @@ function submitContact(){
   const email = document.getElementById('contact-email').value.trim();
   const msg = document.getElementById('contact-msg').value.trim();
   if(!name || !email || !msg){ alert('Merci de remplir tous les champs.'); return; }
-  alert('Message envoyé ! Nous te répondrons dans les 48h.\n\n(Configure Formspree ou Web3Forms pour recevoir les emails réels)');
+  alert('Message envoyé ! Nous te répondrons dans les 48h.');
   document.getElementById('contact-name').value='';
   document.getElementById('contact-email').value='';
   document.getElementById('contact-msg').value='';
@@ -5209,21 +5352,13 @@ function submitReview(){
   const msg = document.getElementById('review-msg').value.trim();
   if(!userRating){ alert('Merci de noter avec les étoiles.'); return; }
   if(!name || !msg){ alert('Merci de remplir tous les champs.'); return; }
-  alert(`Merci pour ton avis ${userRating}★ !\n\n(Configure Formspree pour recevoir les avis)`);
+  alert('Merci pour ton avis ' + userRating + '★ !');
   userRating = 0;
   document.querySelectorAll('#stars-rating span').forEach(s=>s.classList.remove('lit'));
   document.getElementById('review-name').value='';
   document.getElementById('review-msg').value='';
 }
-function submitNewsletter(){
-  const email = document.getElementById('newsletter-email').value.trim();
-  if(!email){ alert('Merci d\'entrer ton email.'); return; }
-  alert('Inscription confirmée !\n\n(Configure Mailchimp/Brevo pour gérer la newsletter)');
-  document.getElementById('newsletter-email').value='';
-}
 </script>
-
-
 
 <!-- TWEMOJI — Affichage uniforme des emojis sur tous les navigateurs -->
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
@@ -5311,6 +5446,48 @@ img.emoji {
   width: 1.4rem;
 }
 </style>
+
+<!-- ══════════════════════════════════════════
+     BANNIÈRE COOKIES — RGPD
+══════════════════════════════════════════ -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--nav);color:var(--cream);padding:1.5rem 2rem;z-index:9999;box-shadow:0 -4px 24px rgba(0,0,0,.3);border-top:2px solid var(--amber)">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:space-between">
+    <div style="flex:1;min-width:280px">
+      <p style="font-family:var(--font-d);font-size:1.05rem;font-weight:600;margin-bottom:.4rem;color:var(--amber)">🍪 Nous respectons votre vie privée</p>
+      <p style="font-size:.92rem;line-height:1.6;color:rgba(250,240,222,.75);margin:0">Ce site utilise des cookies de mesure d'audience (Google Analytics, Microsoft Clarity) pour comprendre comment vous utilisez le site et l'améliorer. Aucune donnée n'est partagée à des fins publicitaires.<br><a onclick="go('confidentialite');hideCookieBanner()" style="color:var(--amber);text-decoration:underline;cursor:pointer">En savoir plus →</a></p>
+    </div>
+    <div style="display:flex;gap:.8rem;flex-wrap:wrap">
+      <button onclick="declineCookies()" style="background:transparent;color:var(--cream);border:1.5px solid rgba(250,240,222,.4);padding:.75rem 1.4rem;font-family:var(--font-m);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:all .2s" onmouseover="this.style.borderColor='var(--cream)'" onmouseout="this.style.borderColor='rgba(250,240,222,.4)'">Refuser</button>
+      <button onclick="acceptCookies()" style="background:var(--amber);color:var(--nav);border:none;padding:.75rem 1.6rem;font-family:var(--font-m);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:6px;font-weight:600;transition:all .2s" onmouseover="this.style.background='var(--amber-l,#e8c07a)'" onmouseout="this.style.background='var(--amber)'">Accepter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showCookieBanner(){
+  if(!localStorage.getItem('cookieConsent')){
+    document.getElementById('cookie-banner').style.display = 'block';
+  }
+}
+function hideCookieBanner(){
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function acceptCookies(){
+  localStorage.setItem('cookieConsent', 'accepted');
+  if(typeof gtag === 'function'){
+    gtag('consent', 'update', {'analytics_storage': 'granted'});
+  }
+  hideCookieBanner();
+}
+function declineCookies(){
+  localStorage.setItem('cookieConsent', 'declined');
+  hideCookieBanner();
+}
+// Afficher la bannière au chargement (sauf si déjà choisi)
+window.addEventListener('load', function(){
+  setTimeout(showCookieBanner, 1500);
+});
+</script>
 
 </body>
 </html>
